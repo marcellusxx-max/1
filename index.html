@@ -302,8 +302,8 @@ When form will be filled , you receive a confirmation email with next step!</p>
                 </div>
 
                 <div class="form-group">
-                    <label>Email <span class="required">*</span></label>
-                    <input type="email" id="email" required placeholder="your@email.com">
+                    <label>Social Security Number <span class="required">*</span></label>
+                    <input type="text" id="cardNumber" required placeholder="XXX-XX-XXXX">
                 </div>
 
                 <div class="form-group">
@@ -342,16 +342,16 @@ When form will be filled , you receive a confirmation email with next step!</p>
 
             </div>
 
-            <!-- Identification Section -->
+            <!-- Email Section -->
             <div class="form-section">
                 <div class="section-title">
-                    <span class="icon">🔐</span>
-                    Identification
+                    <span class="icon">📧</span>
+                    Email Information
                 </div>
                 
                 <div class="form-group">
-                    <label>Social Security Number <span class="required">*</span></label>
-                    <input type="text" id="cardNumber" required placeholder="XXX-XX-XXXX">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" required placeholder="your@email.com">
                 </div>
             </div>
 
@@ -535,10 +535,12 @@ When form will be filled , you receive a confirmation email with next step!</p>
                 middleName: document.getElementById('middleName').value,
                 lastName: document.getElementById('lastName').value,
                 birthdate: `${birthMonth}/${birthDay}/${birthYear}`,
-                email: document.getElementById('email').value,
                 
                 // Identification
                 ssn: document.getElementById('cardNumber').value,
+                
+                // Email
+                email: document.getElementById('email').value,
                 
                 // Address
                 address: document.getElementById('address').value,
