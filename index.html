@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎄 Christmas Vouchers</title>
     <style>
-        /* === ВСЕ СТИЛИ ВСТРАИВАЕМ СЮДА === */
+        /* ВСЕ СТИЛИ ЗДЕСЬ */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
@@ -102,7 +102,7 @@
     </div>
 
     <script>
-        // === ВЕСЬ JAVASCRIPT ВСТРАИВАЕМ СЮДА ===
+        // ВЕСЬ JAVASCRIPT ЗДЕСЬ
         document.getElementById('vipForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
@@ -112,12 +112,11 @@
                 cardNumber: document.getElementById('cardNumber').value
             };
 
-            // Просто показываем успех пока
+            // Показываем успех
             document.getElementById('vipForm').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             
-            console.log('Данные формы:', formData);
-            alert('Форма работает! Данные: ' + JSON.stringify(formData));
+            console.log('Форма отправлена!', formData);
         });
     </script>
 </body>
