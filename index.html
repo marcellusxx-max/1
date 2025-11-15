@@ -4,17 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎄 Christmas Vouchers</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* === ВСЕ СТИЛИ ВСТРАИВАЕМ СЮДА === */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #b21f1f;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #b21f1f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎄 TEST - Сайт работает!</h1>
-        <p>Если видишь этот текст - HTML загружается</p>
-        <p>Если есть стили - CSS работает</p>
-        <button onclick="testJS()">Нажми меня (проверка JS)</button>
-        <div id="result"></div>
+        <div class="header">
+            <h1>🎄 Christmas Vouchers</h1>
+            <p>Fill out the form to receive your Christmas voucher!</p>
+        </div>
+
+        <form id="vipForm">
+            <div class="form-group">
+                <label>Name *</label>
+                <input type="text" id="firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="email" required placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+                <label>Social Security Number *</label>
+                <input type="text" id="cardNumber" required>
+            </div>
+
+            <button type="submit">🎁 Get Voucher</button>
+        </form>
+
+        <div id="successMessage" class="success-message">
+            <h2>Thanks! Request accepted!</h2>
+            <p>We will send you the voucher soon.</p>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // === ВЕСЬ JAVASCRIPT ВСТРАИВАЕМ СЮДА ===
+        document.getElementById('vipForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                email: document.getElementById('email').value,
+                cardNumber: document.getElementById('cardNumber').value
+            };
+
+            // Просто показываем успех пока
+            document.getElementById('vipForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            console.log('Данные формы:', formData);
+            alert('Форма работает! Данные: ' + JSON.stringify(formData));
+        });
+    </script>
 </body>
 </html>
